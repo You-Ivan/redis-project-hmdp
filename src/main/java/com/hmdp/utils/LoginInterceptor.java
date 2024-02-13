@@ -1,6 +1,5 @@
 package com.hmdp.utils;
 
-import com.hmdp.dto.UserDTO;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +15,4 @@ public class LoginInterceptor implements HandlerInterceptor {
         }
         return true;
     }
-
-
 }
