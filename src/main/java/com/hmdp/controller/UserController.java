@@ -2,9 +2,11 @@ package com.hmdp.controller;
 
 
 import cn.hutool.Hutool;
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.RandomUtil;
 import com.hmdp.dto.LoginFormDTO;
 import com.hmdp.dto.Result;
+import com.hmdp.dto.UserDTO;
 import com.hmdp.entity.UserInfo;
 import com.hmdp.service.IUserInfoService;
 import com.hmdp.service.IUserService;
@@ -12,6 +14,7 @@ import com.hmdp.service.impl.UserServiceImpl;
 import com.hmdp.utils.RegexUtils;
 import com.hmdp.utils.UserHolder;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -40,8 +43,8 @@ public class UserController {
      * 发送手机验证码
      */
     @PostMapping("code")
-    public Result sendCode(@RequestParam("phone") String phone, HttpSession session) {
-        return userService.sendCode(phone, session);
+    public Result sendCode(@RequestParam("phone") String phone) {
+        return userService.sendCode(phone);
     }
 
     /**
@@ -49,8 +52,8 @@ public class UserController {
      * @param loginForm 登录参数，包含手机号、验证码；或者手机号、密码
      */
     @PostMapping("/login")
-    public Result login(@RequestBody LoginFormDTO loginForm, HttpSession session){
-        return userService.login(loginForm, session);
+    public Result login(@RequestBody LoginFormDTO loginForm){
+        return userService.login(loginForm);
     }
 
     /**
@@ -65,7 +68,8 @@ public class UserController {
 
     @GetMapping("/me")
     public Result me(){
-        return Result.ok(UserHolder.getUser());
+        log.error(UserHolder.getUser().toString());
+        return Result.ok(BeanUtil.copyProperties(UserHolder.getUser(), UserDTO.class));
     }
 
     @GetMapping("/info/{id}")
